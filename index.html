@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Request</title>
+  <link rel="stylesheet" href="css.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="icon" href="data:,">
+  <style>
+    /* Additional styles untuk Last Buying Date section */
+    .last-buying-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .last-buying-section .full {
+      grid-column: span 1;
+    }
+
+    /* Responsive untuk mobile */
+    @media (max-width: 768px) {
+      .last-buying-section {
+        grid-template-columns: 1fr;
+      }
+
+      .last-buying-section .full {
+        grid-column: span 1;
+      }
+    }
+
+    /* ===== USER FLOATER STYLE ===== */
+    .user-floater {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid #e5e7eb;
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #a8e6d8, #7ddcd0);
+      color: #0d5046;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .user-meta {
+      text-align: left;
+    }
+
+    .user-id {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .user-tag {
+      font-size: 0.75rem;
+      color: #065f46;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logout {
+      background: #f5bfbf;
+      color: #7f1d1d;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .nav-logout:hover {
+      background: #f0a5a5;
+      color: #5a1111;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .user-floater {
+        position: fixed;
+        bottom: auto;
+        right: auto;
+        top: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+      }
+    }
+  </style>
+</head>
+
+<body class="theme-request">
+  <!-- User Floater Status Bar -->
+  <div id="userFloater" class="user-floater"></div>
+
+  <!-- BARIS-1 : Modern Header dengan icon dan subtitle -->
+  <div class="head-bar"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="logo.png" alt="Company Logo" style="width: 48px; height: 48px; object-fit: contain;">
+      <div>
+        <h2 style="margin: 0; font-size: 1.5rem; color: #1f2937;">Purchase Request</h2>
+        <p style="margin: 0; font-size: 0.85rem; color: #6b7280; font-weight: 400;">Daftar permintaan pembelian barang
+        </p>
+      </div>
+    </div>
+    <div class="head-actions" style="display: flex; gap: 12px;">
+      <a href="dashboard.html" class="btn-secondary btn-link"
+        style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+        ← Dashboard
+      </a>
+      <button id="btnAdd" class="btn-primary" style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 18px;">+</span>
+        Tambah Permintaan
+      </button>
+    </div>
+  </div>
+
+  <!-- BARIS-2 : filter + search -->
+  <div class="filter-bar"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div style="display: flex; align-items: center; gap: 8px; color: #6b7280; font-size: 0.9rem;">
+      Tampilkan
+      <select id="pageSize"
+        style="padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; color: #374151; font-size: 0.9rem;">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      data
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: #6b7280; font-size: 0.9rem;">🔍</span>
+      <input type="text" id="search" placeholder="Cari data..."
+        style="padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 8px; background: #f9fafb; min-width: 250px; font-size: 0.9rem;">
+    </div>
+  </div>
+
+  <!-- MODAL (ADD + EDIT) -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Form Permintaan Barang</h3>
+        <button id="btnClose" class="modal-close" type="button">×</button>
+      </div>
+      <form id="prForm" class="pr-form" autocomplete="off">
+        <input type="hidden" name="ID" id="formID">
+        <div class="form-grid">
+          <div><label>Department</label><input name="Department" required></div>
+          <div><label>Office</label><input name="Office" required></div>
+          <div><label>Items</label><input name="Items" required></div>
+          <div><label>Part Of</label><input name="PartOf"></div>
+          <div class="full"><label>Description</label><textarea name="Description" rows="3"></textarea></div>
+          <div><label>Qty</label><input name="Qty" type="number" min="1" required></div>
+          <div><label>Unit</label><input name="Unit" required></div>
+          <div><label>Price</label><input name="Price" type="number" min="0" required></div>
+          
+          <!-- Last Buying Section -->
+          <div>
+            <label>Last Buying Option</label>
+            <select id="lastBuyingOption" onchange="handleLastBuyingOption()">
+              <option value="date">Gunakan Tanggal</option>
+              <option value="never">Never Buy</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Last Buying Date</label>
+            <input id="lastBuyingDate" type="date">
+          </div>
+          
+          <input type="hidden" name="LastBuyingDate" id="lastBuyingDateHidden">
+          
+          <div><label>Order Date</label><input name="OrderDate" type="date" required value=""></div>
+          <div><label>Priority</label>
+            <select name="Priority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+            </select>
+          </div>
+          <div><label>Order By</label><input name="OrderBy"></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="btnCancel" class="btn-secondary">Batal</button>
+          <button type="submit" class="btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-bottom">
+    <div id="infoText"></div>
+    <div id="pagination"></div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="ui-helper.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+ 
+  <script>
+    // ============================================
+    // LAST BUYING DATE HANDLER - FIXED
+    // ============================================
+    
+    function handleLastBuyingOption() {
+      const option = document.getElementById('lastBuyingOption').value;
+      const dateInput = document.getElementById('lastBuyingDate');
+      
+      if (option === 'never') {
+        dateInput.value = '';
+        dateInput.disabled = true;
+        dateInput.style.backgroundColor = '#f3f4f6';
+        dateInput.style.cursor = 'not-allowed';
+      } else {
+        dateInput.disabled = false;
+        dateInput.style.backgroundColor = '#fff';
+        dateInput.style.cursor = 'auto';
+      }
+    }
+
+    // Fallback function untuk handle LastBuyingDate saat open edit
+    function handleLastBuyingDateFallback(value) {
+      console.log('handleLastBuyingDateFallback called with:', value);
+      const optionSelect = document.getElementById('lastBuyingOption');
+      const dateInput = document.getElementById('lastBuyingDate');
+      const hiddenInput = document.getElementById('lastBuyingDateHidden');
+      
+      if (!optionSelect || !dateInput || !hiddenInput) {
+        console.error('Last Buying Date elements not found!');
+        return;
+      }
+      
+      if (!value || value === 'Never Buy') {
+        optionSelect.value = 'never';
+        dateInput.value = '';
+        dateInput.disabled = true;
+        dateInput.style.backgroundColor = '#f3f4f6';
+        hiddenInput.value = 'Never Buy';
+      } else {
+        optionSelect.value = 'date';
+        dateInput.disabled = false;
+        dateInput.style.backgroundColor = '#fff';
+        
+        const formatted = parseDateForInput(value);
+        dateInput.value = formatted;
+        hiddenInput.value = formatted;
+      }
+    }
+
+    // Helper function untuk parse tanggal
+    function parseDateForInput(dateValue) {
+      if (!dateValue) return '';
+      
+      if (typeof dateValue === 'string' && dateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return dateValue;
+      }
+      
+      if (dateValue instanceof Date) {
+        const y = dateValue.getFullYear();
+        const m = String(dateValue.getMonth() + 1).padStart(2, '0');
+        const d = String(dateValue.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+      
+      const dateStr = String(dateValue).trim();
+      if (!dateStr) return '';
+      
+      const match = dateStr.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+      if (match) {
+        const day = match[1].padStart(2, '0');
+        const month = match[2].padStart(2, '0');
+        const year = match[3];
+        return `${year}-${month}-${day}`;
+      }
+      
+      const d = new Date(dateStr);
+      if (!isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const dStr = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${dStr}`;
+      }
+      
+      console.warn('Failed to parse date:', dateValue);
+      return '';
+    }
+
+    // Intercept form submit
+    document.getElementById('prForm')?.addEventListener('submit', function(e) {
+      const dateInput = document.getElementById('lastBuyingDate');
+      const hiddenInput = document.getElementById('lastBuyingDateHidden');
+      const option = document.getElementById('lastBuyingOption').value;
+      
+      if (option === 'never') {
+        hiddenInput.value = 'Never Buy';
+        dateInput.value = '';
+      } else {
+        if (dateInput.value) {
+          hiddenInput.value = dateInput.value;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

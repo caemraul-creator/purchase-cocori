@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Export Data - Purchase Request System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <script src="config.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: slideDown 0.5s ease;
+    }
+
+    .logo-container {
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #0c4a6e;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: #0369a1;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background: white;
+      color: #0c4a6e;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #cffafe;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-btn:hover {
+      background: #f0f9ff;
+      transform: translateY(-2px);
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid #cffafe;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      animation: slideUp 0.5s ease 0.2s backwards;
+    }
+
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: white;
+      text-align: center;
+      line-height: 1.2;
+      min-height: 56px;
+      box-sizing: border-box;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-4px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-request {
+      background: linear-gradient(135deg, #a8e6d8, #7ddcd0);
+      color: #0d5046;
+      box-shadow: 0 4px 6px rgba(120, 220, 200, 0.3);
+    }
+
+    .btn-request:hover:not(:disabled) {
+      box-shadow: 0 8px 12px rgba(120, 220, 200, 0.4);
+    }
+
+    .btn-approval {
+      background: linear-gradient(135deg, #f5bfda, #f0a8d0);
+      color: #5f1841;
+      box-shadow: 0 4px 6px rgba(245, 191, 218, 0.3);
+    }
+
+    .btn-approval:hover:not(:disabled) {
+      box-shadow: 0 8px 12px rgba(245, 191, 218, 0.4);
+    }
+
+    .btn-rekap {
+      background: linear-gradient(135deg, #fed9b1, #fcc886);
+      color: #5a2700;
+      box-shadow: 0 4px 6px rgba(254, 217, 177, 0.3);
+    }
+
+    .btn-rekap:hover:not(:disabled) {
+      box-shadow: 0 8px 12px rgba(254, 217, 177, 0.4);
+    }
+
+    .btn-rejected {
+      background: linear-gradient(135deg, #f5bfbf, #f0a5a5);
+      color: #5a1111;
+      box-shadow: 0 4px 6px rgba(245, 191, 191, 0.3);
+    }
+
+    .btn-rejected:hover:not(:disabled) {
+      box-shadow: 0 8px 12px rgba(245, 191, 191, 0.4);
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #f5fdf7 100%);
+      border: 1px solid #d1fce8;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .info-box h3 {
+      color: #134e4a;
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-box li {
+      color: #166534;
+      padding: 8px 0;
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      color: #15803d;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.success {
+      background: #16a34a;
+    }
+
+    .toast.error {
+      background: #dc2626;
+    }
+
+    .toast.warning {
+      background: #f59e0b;
+    }
+
+    .user-floater {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .user-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #a5d6ff, #79c0eb);
+      color: #075985;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .user-meta {
+      text-align: left;
+    }
+
+    .user-id {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .user-tag {
+      font-size: 0.75rem;
+      color: #075985;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logout {
+      background: #f5bfbf;
+      color: #7f1d1d;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .nav-logout:hover {
+      background: #f0a5a5;
+      color: #5a1111;
+      transform: scale(1.05);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .buttons-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .buttons-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .user-floater {
+        bottom: auto;
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        width: calc(100% - 30px);
+      }
+
+      body {
+        padding-top: 90px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="userFloater" class="user-floater"></div>
+
+  <div class="container">
+    <a href="dashboard.html" class="back-btn">← Kembali ke Dashboard</a>
+
+    <div class="header">
+      <div class="logo-container">
+        <img src="logo.png" alt="Company Logo">
+      </div>
+      <h1>
+        <span>📄</span>
+        Export Data PDF
+      </h1>
+      <p>Download data purchase request sesuai tampilan tabel halaman</p>
+    </div>
+
+    <div class="card">
+      <div class="buttons-grid">
+        <button class="btn btn-request" onclick="exportByPage('index')" id="btnRequest">
+          📄 Export Request
+        </button>
+        <button class="btn btn-approval" onclick="exportByPage('approval')" id="btnApproval">
+          📄 Export Approval
+        </button>
+        <button class="btn btn-rekap" onclick="exportByPage('rekap')" id="btnRekap">
+          📄 Export Rekap
+        </button>
+        <button class="btn btn-rejected" onclick="exportByPage('rejected')" id="btnRejected">
+          📄 Export Rejected
+        </button>
+      </div>
+
+      <div class="info-box">
+        <h3>📋 Penjelasan Setiap Export:</h3>
+        <ul>
+          <li><strong>📄 Export Request</strong><br>Export data pending dari halaman New Request</li>
+          <li><strong>📄 Export Approval</strong><br>Export data yang sudah approval</li>
+          <li><strong>📄 Export Rekap</strong><br>Export data barang yang sudah di Done</li>
+          <li><strong>📄 Export Rejected</strong><br>Export data reject</li>
+        </ul>
+      </div>
+
+      <div class="info-box" style="background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-color: #fcd34d;">
+        <h3 style="color: #92400e;">ℹ️ Informasi Teknis:</h3>
+        <ul style="color: #78350f;">
+          <li>✓ Format: <strong>PDF Landscape</strong></li>
+          <li>✓ Kolom: <strong>Hanya sampai Status (kolom utama)</strong></li>
+          <li>✓ Format Rupiah: <strong>Rp dengan pemisah ribuan</strong></li>
+          <li>✓ Format Tanggal: <strong>DD/MM/YYYY (Order Date & Last Buying Date)</strong></li>
+          <li>✓ Nama file otomatis dengan tanggal dan jam download</li>
+          <li>✓ Siap untuk dicetak atau dishare</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    if (!sessionStorage.getItem('isLoggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    function renderUserFloater() {
+      const user = sessionStorage.getItem('username') || 'User';
+      const rawRole = sessionStorage.getItem('userRole') || 'viewer';
+      const role = rawRole.toLowerCase().trim().replace(/ /g, '_');
+      const roleName = ROLE_NAMES[role] || (rawRole || 'Member');
+      const initial = user.charAt(0).toUpperCase();
+
+      document.getElementById('userFloater').innerHTML = `
+        <div class="user-avatar">${initial}</div>
+        <div class="user-meta">
+          <div class="user-id">${user}</div>
+          <div class="user-tag">${roleName}</div>
+        </div>
+        <button class="nav-logout" onclick="logout()" title="Logout">⊗</button>
+      `;
+    }
+
+    function logout() {
+      if (confirm('Selesaikan sesi pekerjaan Anda sekarang?')) {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    const ALLOWED_COLUMNS = [
+      'ID', 'Department', 'Office', 'Items', 'PartOf', 'Description', 
+      'Qty', 'Unit', 'Price', 'Nominal', 'LastBuyingDate', 'OrderDate', 
+      'Priority', 'OrderBy', 'Status'
+    ];
+
+    const pageConfigs = {
+      index: {
+        sheetName: '',
+        title: 'Purchase Request - New Request',
+        filter: 'pending',
+        hiddenColumns: []
+      },
+      approval: {
+        sheetName: '',
+        title: 'Purchase Request - Approval Hub',
+        filter: 'approved',
+        hiddenColumns: []
+      },
+      rekap: {
+        sheetName: 'done',
+        title: 'Purchase Request - Report Center',
+        filter: null,
+        hiddenColumns: []
+      },
+      rejected: {
+        sheetName: 'rejected',
+        title: 'Purchase Request - Rejection Log',
+        filter: null,
+        hiddenColumns: []
+      }
+    };
+
+    function fetchDataFromAPI(sheetName = '') {
+      return new Promise((resolve, reject) => {
+        const callbackName = `cb_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+        window[callbackName] = function(data) {
+          delete window[callbackName];
+          document.getElementById(`script-${callbackName}`)?.remove();
+          resolve(data);
+        };
+
+        const url = new URL(API_URL);
+        url.searchParams.set('callback', callbackName);
+        if (sheetName) url.searchParams.set('sheet', sheetName);
+
+        const script = document.createElement('script');
+        script.id = `script-${callbackName}`;
+        script.src = url.toString();
+        script.onerror = () => reject(new Error('Gagal mengambil data'));
+        
+        const timeout = setTimeout(() => {
+          reject(new Error('Timeout - data tidak diterima'));
+        }, 15000);
+        
+        script.onload = () => clearTimeout(timeout);
+        document.body.appendChild(script);
+      });
+    }
+
+    function formatTanggal(value) {
+      if (!value) return '';
+      if (value === 'Never Buy') return 'Never Buy';
+      
+      try {
+        const d = new Date(value);
+        if (isNaN(d.getTime())) return value;
+        
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const yyyy = d.getFullYear();
+        const hh = String(d.getHours()).padStart(2, '0');
+        const mi = String(d.getMinutes()).padStart(2, '0');
+        
+        return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
+      } catch (e) {
+        return value;
+      }
+    }
+
+    function formatTanggalSaja(value) {
+      if (!value) return '';
+      if (value === 'Never Buy') return 'Never Buy';
+      
+      try {
+        const d = new Date(value);
+        if (isNaN(d.getTime())) return value;
+        
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const yyyy = d.getFullYear();
+        
+        return `${dd}/${mm}/${yyyy}`;
+      } catch (e) {
+        return value;
+      }
+    }
+
+    function formatRupiah(value) {
+      if (!value && value !== 0) return '';
+      const number = parseFloat(value);
+      if (isNaN(number)) return value;
+      return 'Rp ' + number.toLocaleString('id-ID');
+    }
+
+    const datetimeColumns = ['CreatedAt', 'SubmissionDate', 'ApprovedDate', 'DoneDate', 'RejectedDate'];
+    const dateOnlyColumns = ['LastBuyingDate', 'OrderDate'];
+    const currencyColumns = ['Price', 'Nominal'];
+
+    function createTableHTML(data, hiddenColumns, filter = null) {
+      if (!Array.isArray(data) || data.length === 0) return '<p>Tidak ada data</p>';
+
+      let filteredData = data;
+      if (filter) {
+        filteredData = data.filter(row => (row.Status || '').toLowerCase() === filter);
+      }
+
+      if (filteredData.length === 0) return '<p>Tidak ada data</p>';
+
+      const allHeaders = Object.keys(filteredData[0] || {});
+      const headers = allHeaders.filter(h => ALLOWED_COLUMNS.includes(h));
+
+      const headerRow = headers.map(h => `<th style="padding: 6px; text-align: left; border: 1px solid #ddd; background: #f0f0f0; font-weight: bold; font-size: 9px; word-wrap: break-word;">${h}</th>`).join('');
+
+      const bodyRows = filteredData.map(row => {
+        const cells = headers.map(h => {
+          let value = row[h] ?? '';
+          
+          if (datetimeColumns.includes(h) && value) {
+            value = formatTanggal(value);
+          }
+          else if (dateOnlyColumns.includes(h) && value) {
+            value = formatTanggalSaja(value);
+          }
+          
+          if (currencyColumns.includes(h) && value) {
+            value = formatRupiah(value);
+          }
+          
+          const displayValue = String(value).substring(0, 50);
+          return `<td style="padding: 4px; border: 1px solid #ddd; font-size: 8px; word-wrap: break-word; max-width: 80px;">${displayValue}</td>`;
+        }).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+
+      return `
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 8px;">
+          <thead><tr>${headerRow}</tr></thead>
+          <tbody>${bodyRows}</tbody>
+        </table>
+      `;
+    }
+
+    function generateAndDownloadPDF(htmlContent, filename) {
+      const element = document.createElement('div');
+      element.innerHTML = `
+        <div style="font-family: Arial, sans-serif; padding: 15px; font-size: 8px;">
+          <div style="text-align: center; margin-bottom: 15px;">
+            <h1 style="margin: 0; color: #0c4a6e; font-size: 16px;">📄 Purchase Request Report</h1>
+            <p style="color: #666; margin: 5px 0; font-size: 9px;">Generated: ${new Date().toLocaleString('id-ID')}</p>
+          </div>
+          ${htmlContent}
+        </div>
+      `;
+
+      const options = {
+        margin: [8, 8, 8, 8],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 1.5, useCORS: true },
+        jsPDF: { 
+          orientation: 'landscape', 
+          unit: 'mm', 
+          format: 'a4',
+          compress: true
+        }
+      };
+
+      html2pdf().set(options).from(element).save();
+    }
+
+    async function exportByPage(pageKey) {
+      const config = pageConfigs[pageKey];
+      const btnIds = { index: 'btnRequest', approval: 'btnApproval', rekap: 'btnRekap', rejected: 'btnRejected' };
+      const btn = document.getElementById(btnIds[pageKey]);
+      btn.disabled = true;
+      btn.textContent = '⏳ Memproses...';
+
+      try {
+        showToast(`⏳ Mengekspor ${pageKey}...`, 'warning');
+        
+        const data = await fetchDataFromAPI(config.sheetName);
+        const htmlContent = `
+          <div style="page-break-after: always; margin-bottom: 20px;">
+            <h2 style="color: #333; margin-bottom: 10px; font-size: 14px;">${config.title}</h2>
+            ${createTableHTML(data, config.hiddenColumns, config.filter)}
+          </div>
+        `;
+
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('-').slice(0, 3).join('-') + '_' + 
+                         new Date().getHours().toString().padStart(2, '0') + 
+                         new Date().getMinutes().toString().padStart(2, '0');
+
+        generateAndDownloadPDF(
+          htmlContent,
+          `Purchase-Request-${pageKey}-${timestamp}.pdf`
+        );
+
+        showToast(`✅ Export ${pageKey} berhasil!`, 'success');
+      } catch (err) {
+        console.error(err);
+        showToast(`❌ ${err.message}`, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = `📄 Export ${pageKey.charAt(0).toUpperCase() + pageKey.slice(1)}`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderUserFloater);
+  </script>
+</body>
+
+</html>

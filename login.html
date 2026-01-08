@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Purchase Request System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-left {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 60px 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-left h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .login-left p {
+      font-size: 1rem;
+      opacity: 0.9;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feature-list li::before {
+      content: '✓';
+      width: 24px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .login-right {
+      padding: 60px 40px;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-container {
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .login-header h2 {
+      font-size: 1.8rem;
+      color: #1f2937;
+      margin-bottom: 10px;
+    }
+
+    .login-header p {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-login.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spinner 0.6s linear infinite;
+    }
+
+    @keyframes spinner {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+      animation: shake 0.5s ease;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .message.success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-10px);
+      }
+
+      75% {
+        transform: translateX(10px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        grid-template-columns: 1fr;
+      }
+
+      .login-left {
+        display: none;
+      }
+
+      .login-right {
+        padding: 40px 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <!-- Left Side -->
+    <div class="login-left">
+      <h1>🛒 Purchase Request System</h1>
+      <p>Sistem manajemen permintaan pembelian barang yang modern dan efisien</p>
+      <ul class="feature-list">
+        <li>Dashboard interaktif dengan statistik real-time</li>
+        <li>Approval workflow yang terstruktur</li>
+        <li>Laporan dan rekapitulasi lengkap</li>
+        <li>Role-based access control</li>
+        <li>Login tersimpan aman di database</li>
+      </ul>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-right">
+      <div class="login-header">
+        <div class="logo-container">
+          <img src="logo.png" alt="Company Logo">
+        </div>
+        <h2>Selamat Datang</h2>
+        <p>Silakan login untuk melanjutkan</p>
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="username" required placeholder="Masukkan username" autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" required placeholder="Masukkan password" autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-login" id="btnLogin">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+  const messageDiv = document.getElementById('message');
+  const loginForm = document.getElementById('loginForm');
+  const btnLogin = document.getElementById('btnLogin');
+
+  function showMessage(text, type = 'error') {
+    messageDiv.textContent = text;
+    messageDiv.className = `message ${type} show`;
+    setTimeout(() => messageDiv.classList.remove('show'), 5000);
+  }
+
+  function setLoading(isLoading) {
+    btnLogin.disabled = isLoading;
+    btnLogin.textContent = isLoading ? '' : 'Login';
+    btnLogin.classList.toggle('loading', isLoading);
+  }
+
+  loginForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!username || !password) {
+      showMessage('⚠️ Semua field harus diisi!', 'error');
+      return;
+    }
+
+    if (typeof API_URL === 'undefined') {
+      showMessage('❌ Config tidak ditemukan. Pastikan config.js tersedia!', 'error');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await loginAPI(username, password);
+      
+      if (response.success) {
+        handleSuccess(response);
+      } else {
+        showMessage('❌ ' + (response.message || 'Username atau password salah'), 'error');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      showMessage('❌ Gagal terhubung ke server', 'error');
+    }
+
+    setLoading(false);
+  });
+
+  function loginAPI(username, password) {
+    return new Promise((resolve, reject) => {
+      const callbackName = 'cb_' + Date.now();
+      
+      window[callbackName] = function(response) {
+        delete window[callbackName];
+        document.getElementById('login-jsonp')?.remove();
+        resolve(response);
+      };
+
+      const params = new URLSearchParams({
+        action: 'login',
+        username: username,
+        password: password,
+        callback: callbackName
+      });
+
+      const script = document.createElement('script');
+      script.id = 'login-jsonp';
+      script.src = `${API_URL}?${params}`;
+      script.onerror = () => reject(new Error('Network error'));
+      document.body.appendChild(script);
+    });
+  }
+
+  function handleSuccess(response) {
+    showMessage('✅ Login berhasil! Mengalihkan...', 'success');
+
+    // DEBUG: Lihat role yang sebenarnya dikirim Apps Script
+    const rawRole = response.user.role || 'UNKNOWN';
+    console.log('===== LOGIN DEBUG =====');
+    console.log('Raw role dari Apps Script:', rawRole);
+    console.log('Role type:', typeof rawRole);
+    
+    const role = response.user.role?.toLowerCase().trim().replace(/ /g, '_') || 'viewer';
+    console.log('Role after normalize:', role);
+    console.log('Permissions keys:', Object.keys(PERMISSIONS || {}));
+    console.log('Is valid role?', role in (PERMISSIONS || {}));
+    console.log('=======================');
+    
+    sessionStorage.setItem('userRole', role);
+    sessionStorage.setItem('username', response.user.username);
+    sessionStorage.setItem('fullName', response.user.fullName);
+    sessionStorage.setItem('isLoggedIn', 'true');
+
+    const allowed = (typeof PERMISSIONS !== 'undefined' && PERMISSIONS[role]) ? PERMISSIONS[role] : [];
+    const target = allowed.length ? allowed[0] : 'index.html';
+    setTimeout(() => {
+      window.location.href = target;
+    }, 600);
+  }
+
+</script>
+
+</body>
+
+</html>

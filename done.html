@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Done - Purchase Request</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css.css">
+  <link rel="stylesheet" href="themes.css">
+  <style>
+    /* User Floater Style */
+    .user-floater {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: white;
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid #e5e7eb;
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user-avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #b0f0d3, #86e6ba);
+      color: #0f4637;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .user-meta {
+      text-align: left;
+    }
+
+    .user-id {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .user-tag {
+      font-size: 0.75rem;
+      color: #134e4a;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logout {
+      background: #f5bfbf;
+      color: #7f1d1d;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .nav-logout:hover {
+      background: #f0a5a5;
+      color: #5a1111;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .user-floater {
+        position: fixed;
+        bottom: auto;
+        right: auto;
+        top: 15px;
+        left: 15px;
+        width: calc(100% - 30px);
+      }
+    }
+  </style>
+</head>
+
+<body class="theme-done">
+
+  <!-- User Floater Status Bar -->
+  <div id="userFloater" class="user-floater"></div>
+
+  <!-- BARIS-1 : judul + Dashboard dengan LOGO -->
+  <div style="display:flex; gap: 12px; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="logo.png" alt="Company Logo" style="width: 48px; height: 48px; object-fit: contain;">
+      <h2>Done Purchase Request</h2>
+    </div>
+    <a href="dashboard.html" class="btn-secondary btn-link">← Dashboard</a>
+  </div>
+
+  <!-- BARIS-2 : filter + search -->
+  <div class="filter-bar">
+    <div>
+      Tampilkan
+      <select id="pageSize">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+      </select>
+      data
+    </div>
+    <div>
+      Cari:
+      <input type="text" id="search" placeholder="Cari data…">
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- BOTTOM BAR (WAJIB UNTUK PAGINATION) -->
+  <div class="table-bottom">
+    <div id="infoText"></div>
+    <div id="pagination"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <!-- SCRIPT -->
+  <script src="config.js"></script>
+  <script src="ui-helper.js"></script>
+  <script src="auth.js"></script>
+  <script src="done.js"></script>
+  
+  <script>
+    function renderUserStatus() {
+      const user = sessionStorage.getItem('username') || 'User';
+      const rawRole = sessionStorage.getItem('userRole') || 'viewer';
+      const role = rawRole.toLowerCase().replace(/ /g, '_');
+
+      const roleName =
+        typeof ROLE_NAMES !== 'undefined' && ROLE_NAMES[role]
+          ? ROLE_NAMES[role]
+          : rawRole;
+
+      const floater = document.getElementById('userFloater');
+      if (!floater) return;
+
+      floater.innerHTML = `
+        <div class="user-avatar">${user.charAt(0).toUpperCase()}</div>
+        <div class="user-meta">
+          <div class="user-id">${user}</div>
+          <div class="user-tag">${roleName}</div>
+        </div>
+        <button class="nav-logout" onclick="performLogout()">⊙</button>
+      `;
+    }
+
+    function performLogout() {
+      if (confirm('Selesaikan sesi pekerjaan Anda sekarang?')) {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderUserStatus);
+  </script>
+
+</body>
+
+</html>

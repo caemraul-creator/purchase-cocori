@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approval Purchase Request</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css.css">
+  <link rel="stylesheet" href="themes.css">
+</head>
+
+<body class="theme-approval">
+
+  <!-- User Floater -->
+  <div id="userFloater" class="user-floater"></div>
+
+  <!-- BARIS-1 : judul + Dashboard dengan LOGO -->
+  <div class="head-bar">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="logo.png" alt="Company Logo" style="width: 48px; height: 48px; object-fit: contain;">
+      <h2>Approval Purchase Request</h2>
+    </div>
+    <a href="dashboard.html" class="btn-secondary btn-link">
+      ← Dashboard</a>
+  </div>
+
+  <!-- BARIS-2 : filter + search -->
+  <div class="filter-bar">
+    <div>
+      Tampilkan
+      <select id="pageSize">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25" selected>25</option>
+        <option value="50">50</option>
+      </select>
+      data
+    </div>
+    <div>
+      Cari:
+      <input type="text" id="search" placeholder="Cari data…">
+    </div>
+  </div>
+
+  <!-- TABEL -->
+  <div class="table-wrapper">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="table-bottom">
+    <div id="infoText"></div>
+    <div id="pagination"></div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="ui-helper.js"></script>
+  <script src="auth.js"></script>
+  <script src="approval.js"></script>
+
+  <script>
+  function renderUserStatus() {
+    const user = sessionStorage.getItem('username') || 'User';
+    const rawRole = sessionStorage.getItem('userRole') || 'viewer';
+    const role = rawRole.toLowerCase().replace(/ /g, '_');
+
+    const roleName =
+      typeof ROLE_NAMES !== 'undefined' && ROLE_NAMES[role]
+        ? ROLE_NAMES[role]
+        : rawRole;
+
+    const floater = document.getElementById('userFloater');
+    if (!floater) return;
+
+    floater.innerHTML = `
+      <div class="user-avatar">${user.charAt(0).toUpperCase()}</div>
+      <div class="user-meta">
+        <div class="user-id">${user}</div>
+        <div class="user-tag">${roleName}</div>
+      </div>
+      <button class="nav-logout" onclick="performLogout()">⊙</button>
+    `;
+  }
+
+  function performLogout() {
+    if (confirm('Selesaikan sesi pekerjaan Anda sekarang?')) {
+      sessionStorage.clear();
+      window.location.href = 'login.html';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderUserStatus);
+</script>
+
+</body>
+
+</html>

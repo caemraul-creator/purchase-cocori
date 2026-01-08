@@ -1,0 +1,376 @@
+/* ============================================================ 
+   LIGHT COLORFUL THEME - Clean & Professional
+   Multi Pastel Colors dengan kombinasi:
+   Dashboard = Blue, Request = Purple, Approval = Pink,
+   Done = Green, Rekap = Orange, Rejected = Red
+   Modern pastel colors with white/light backgrounds
+============================================================ */
+
+body {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+  background: #f8f9fa !important;
+  position: relative;
+  color: #1f2937;
+}
+
+/* Clean Glassmorphism */
+.form-wrapper,
+.table-wrapper,
+.modal-content,
+.dashboard-card {
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 12px !important;
+}
+
+/* Modern Header Typography */
+.head-bar h2 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem !important;
+  letter-spacing: -0.025em;
+  color: #1f2937;
+}
+
+/* ===== DASHBOARD (dashboard.html) - PASTEL BLUE ===== */
+.theme-dashboard {
+  --primary: #93c5fd;
+  --primary-600: #60a5fa;
+  --bg: #eff6ff;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+}
+
+.theme-dashboard th {
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 700;
+}
+
+.theme-dashboard .btn-primary {
+  background: linear-gradient(135deg, #93c5fd, #60a5fa);
+  color: white;
+  box-shadow: 0 1px 3px rgba(96, 165, 250, 0.3);
+}
+
+.theme-dashboard .btn-primary:hover {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  box-shadow: 0 4px 6px rgba(96, 165, 250, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ===== REQUEST (index.html) - PASTEL MINT ===== */
+.theme-request {
+  --primary: #a7f3d0;
+  --primary-600: #6ee7b7;
+  --bg: #f0fdf4;
+  background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%) !important;
+}
+
+.theme-request th {
+  background: #ccfbf1;
+  color: #065f46;
+  font-weight: 700;
+}
+
+.theme-request .btn-primary {
+  background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+  color: white;
+  box-shadow: 0 1px 3px rgba(110, 231, 183, 0.3);
+}
+
+.theme-request .btn-primary:hover {
+  background: linear-gradient(135deg, #6ee7b7, #34d399);
+  box-shadow: 0 4px 6px rgba(110, 231, 183, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ===== APPROVAL (approval.html) - PASTEL PINK ===== */
+.theme-approval {
+  --primary: #f9a8d4;
+  --primary-dark: #f472b6;
+  --bg: #fce7f3;
+  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%) !important;
+}
+
+.theme-approval th {
+  background: #fbcfe8;
+  color: #be185d;
+  font-weight: 700;
+}
+
+.theme-approval .btn-primary {
+  background: linear-gradient(135deg, #f9a8d4, #f472b6);
+  color: white;
+  box-shadow: 0 1px 3px rgba(244, 114, 182, 0.3);
+}
+
+.theme-approval .btn-primary:hover {
+  background: linear-gradient(135deg, #f472b6, #ec4899);
+  box-shadow: 0 4px 6px rgba(244, 114, 182, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ===== DONE (done.html) - PASTEL GREEN ===== */
+.theme-done {
+  --primary: #86efac;
+  --primary-600: #4ade80;
+  --bg: #f0fdf4;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+}
+
+.theme-done th {
+  background: #c6f6d5;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.theme-done .btn-primary {
+  background: linear-gradient(135deg, #86efac, #4ade80);
+  color: white;
+  box-shadow: 0 1px 3px rgba(74, 222, 128, 0.3);
+}
+
+.theme-done .btn-primary:hover {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  box-shadow: 0 4px 6px rgba(74, 222, 128, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ===== REKAP (rekap.html) - PASTEL ORANGE ===== */
+.theme-rekap {
+  --primary: #fed7aa;
+  --primary-dark: #fdba74;
+  --bg: #fffbeb;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+}
+
+.theme-rekap th {
+  background: #fdd5a6;
+  color: #92400e;
+  font-weight: 700;
+}
+
+.theme-rekap .btn-primary {
+  background: linear-gradient(135deg, #fed7aa, #fdba74);
+  color: white;
+  box-shadow: 0 1px 3px rgba(251, 146, 60, 0.3);
+}
+
+.theme-rekap .btn-primary:hover {
+  background: linear-gradient(135deg, #fdba74, #fb923c);
+  box-shadow: 0 4px 6px rgba(251, 146, 60, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ===== REJECTED (rejected.html) - PASTEL RED ===== */
+.theme-rejected {
+  --primary: #fca5a5;
+  --primary-dark: #f87171;
+  --bg: #fef2f2;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%) !important;
+}
+
+.theme-rejected th {
+  background: #fecaca;
+  color: #991b1b;
+  font-weight: 700;
+}
+
+.theme-rejected .btn-primary {
+  background: linear-gradient(135deg, #fca5a5, #f87171);
+  color: white;
+  box-shadow: 0 1px 3px rgba(248, 113, 113, 0.3);
+}
+
+.theme-rejected .btn-primary:hover {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  box-shadow: 0 4px 6px rgba(248, 113, 113, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Professional Table Headers */
+th {
+  padding: 12px 16px !important;
+  text-transform: uppercase;
+  font-size: 11px !important;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #e5e7eb !important;
+  font-weight: 700 !important;
+}
+
+/* Modern Status Badges */
+.status {
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.done {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Button Refinement */
+button,
+.btn-link {
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+td button {
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  font-size: 10px !important;
+}
+
+.btn-primary {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background: #f3f4f6 !important;
+  color: #374151 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Clean Toast */
+.toast {
+  background: #1f2937 !important;
+  border-radius: 8px !important;
+  padding: 12px 20px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2) !important;
+  color: white;
+}
+
+/* Table Row Hover */
+tbody tr {
+  transition: all 0.15s ease;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+tbody tr:hover {
+  background: #f9fafb !important;
+}
+
+td {
+  color: #374151;
+}
+
+/* Professional Pagination */
+.pagination-btn {
+  transition: all 0.2s ease !important;
+  font-weight: 600 !important;
+  background: white !important;
+  color: #374151 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.pagination-btn:hover:not(.active) {
+  background: #f9fafb !important;
+  border-color: var(--primary) !important;
+  transform: translateY(-1px);
+}
+
+.pagination-btn.active {
+  background: var(--primary) !important;
+  color: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--primary) !important;
+}
+
+/* Text Color Overrides */
+.text-center,
+.text-right {
+  color: #374151 !important;
+}
+
+#infoText {
+  color: #6b7280;
+}
+
+label {
+  color: #374151 !important;
+}
+
+/* Input Styling */
+input,
+select,
+textarea {
+  background: white !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* ===== CUSTOM UNTUK DASHBOARD CARDS ===== */
+.dashboard-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-4px);
+}
+
+.stat-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.stat-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-4px);
+}
+
+/* Menu Item dari Dashboard */
+.menu-item {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.menu-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-4px);
+  border-color: #d1d5db !important;
+}

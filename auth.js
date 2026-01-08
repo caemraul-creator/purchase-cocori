@@ -4,11 +4,11 @@
 
 // Role permissions mapping
 const PERMISSIONS = {
-  admin: ['dashboard.html', 'index.html', 'approval.html', 'done.html', 'rekap.html', 'rejected.html'],
-  viewer: ['index.html'],
-  staff_a: ['index.html', 'rekap.html', 'rejected.html'],
-  staff_b: ['index.html', 'approval.html', 'done.html', 'rekap.html'],
-  staff_c: ['dashboard.html', 'index.html', 'approval.html', 'done.html', 'rekap.html', 'rejected.html']
+  admin: ['dashboard.html', 'index.html', 'approval.html', 'done.html', 'rekap.html', 'rejected.html', 'print.html'],
+  viewer: ['index.html', 'print.html'],
+  staff_a: ['index.html', 'rekap.html', 'rejected.html', 'print.html'],
+  staff_b: ['index.html', 'approval.html', 'done.html', 'rekap.html', 'print.html'],
+  staff_c: ['dashboard.html', 'index.html', 'approval.html', 'done.html', 'rekap.html', 'rejected.html', 'print.html']
 };
 
 // Role display names
